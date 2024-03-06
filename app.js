@@ -17,11 +17,10 @@ const { sequelize } = require("./models");
     try {
         await sequelize.authenticate();
         console.log("Successfully connected to database.");
+        sequelize.sync();
     } catch (err) {
         console.error("Error when trying to connect to database:", err);
     }
-    await sequelize.sync({ force: true });
-    console.log("Database synced.");
 })();
 
 // view engine setup
