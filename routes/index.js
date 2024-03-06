@@ -31,9 +31,10 @@ router.get(
     "/books",
     asyncHandler(async (req, res) => {
         const books = await Book.findAll();
-        console.log(res.json(books));
+        // console.log(res.json(books));
         // res.send("Welcome");
-        res.render("index", { title: "Shows the full list of books" });
+        // res.render("index", { books, title: "Library Application" });
+        res.render("index", { books, title: "Books" });
     })
 );
 
