@@ -49,8 +49,17 @@ app.use(function (err, req, res, next) {
     res.locals.error = req.app.get("env") === "development" ? err : {};
 
     // render the error page
-    res.status(err.status || 500);
-    res.render("error");
+    if (err.status === 404) {
+        err.message = "Sorry, but the page with this url does not exist.";
+        res.status(404).send(err.message);
+        // res.status(404).render("page-not-found", { err });
+        console.log(err.status, err.message);
+    } else {
+        err.message = "Sorry, but something went wrong...";
+        res.status(err.status || 500).send(err.message);
+        // res.render("error");
+        console.log(err.status, err.message);
+    }
 });
 
 module.exports = app;

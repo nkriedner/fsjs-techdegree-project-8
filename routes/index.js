@@ -2,12 +2,25 @@ var express = require("express");
 var router = express.Router();
 const Book = require("../models").Book;
 
-/* GET home page. */
-router.get("/", async function (req, res, next) {
-    // res.render("index", { title: "Express" });
+/* Handler function to wrap each route. */
+function asyncHandler(cb) {
+    return async (req, res, next) => {
+        try {
+            await cb(req, res, next);
+        } catch (error) {
+            // Forward error to the global error handler
+            next(error);
+        }
+    };
+}
 
-    const books = await Book.findAll();
-    console.log(res.json(books));
-});
+/* GET home page. */
+router.get(
+    "/",
+    asyncHandler(async (req, res) => {
+        const books = await Book.findAll();
+        console.log(res.json(books));
+    })
+);
 
 module.exports = router;
