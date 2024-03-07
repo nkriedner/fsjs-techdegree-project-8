@@ -107,6 +107,8 @@ router.post(
                 book = req.body; // book data from the form
                 book.id = req.params.id; // book id from the url params
                 res.render("update-book", { book, errors: err.errors, title: "Update Book" });
+            } else {
+                console.log(err);
             }
         }
     })

@@ -49,7 +49,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     if (err.status === 404) {
-        err.message = "Sorry, but the page with this url does not exist.";
+        err.message = "Sorry, but we could not find a page for this url.";
         // res.status(404).send(err.message);
         res.status(404).render("page-not-found", { err });
         console.log(err.status, err.message);

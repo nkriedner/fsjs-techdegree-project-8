@@ -1,5 +1,8 @@
 extends layout
 
 block content
-  h1= title
-  p PAGE NOT Faund
+  h1 Page Not Found (404)
+  p= error.message
+  br
+  p 
+    a.button(href="/") Home
