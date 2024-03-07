@@ -18,10 +18,8 @@ function asyncHandler(cb) {
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        const books = await Book.findAll();
+        // const books = await Book.findAll();
         // console.log(res.json(books));
-        // res.send("Welcome");
-        // res.render("index", { title: "test" });
         res.redirect("/books");
     })
 );
@@ -31,9 +29,6 @@ router.get(
     "/books",
     asyncHandler(async (req, res) => {
         const books = await Book.findAll();
-        // console.log(res.json(books));
-        // res.send("Welcome");
-        // res.render("index", { books, title: "Library Application" });
         res.render("index", { books, title: "Books" });
     })
 );
@@ -42,9 +37,6 @@ router.get(
 router.get(
     "/books/new",
     asyncHandler(async (req, res) => {
-        const books = await Book.findAll();
-        // console.log(res.json(books));
-        // res.send("Welcome");
         res.render("new-book", { title: "Shows the create new book form" });
     })
 );
@@ -53,9 +45,8 @@ router.get(
 router.post(
     "/books/new",
     asyncHandler(async (req, res) => {
-        const books = await Book.findAll();
-        // console.log(res.json(books));
-        // res.send("Welcome");
+        // create a new book:
+        // -> ......
         res.render("new-book", { title: "Posts a new book to the database" });
     })
 );
@@ -64,10 +55,8 @@ router.post(
 router.get(
     "/books/:id",
     asyncHandler(async (req, res) => {
-        const books = await Book.findAll();
-        // console.log(res.json(books));
-        // res.send("Welcome");
-        res.render("update-book", { title: "Shows book detail form" });
+        const book = await Book.findByPk(req.params.id);
+        res.render("update-book", { book, title: "Shows book detail form" });
     })
 );
 
