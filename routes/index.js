@@ -103,10 +103,11 @@ router.post(
 router.post(
     "/books/:id/delete",
     asyncHandler(async (req, res) => {
-        const books = await Book.findAll();
-        // console.log(res.json(books));
-        // res.send("Welcome");
-        res.render("index", { title: "Deletes a book" });
+        // use the id in the params to find the book
+        const book = await Book.findByPk(req.params.id);
+        // delete book & redirect to main page
+        await book.destroy();
+        res.redirect("/books");
     })
 );
 
