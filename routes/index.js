@@ -14,49 +14,77 @@ function asyncHandler(cb) {
     };
 }
 
-/* GET / route -> redirect to /books */
+/* GET / route -> redirects to /books */
 router.get(
     "/",
     asyncHandler(async (req, res) => {
-        // const books = await Book.findAll();
-        // console.log(res.json(books));
         res.redirect("/books");
     })
 );
 
-/* GET /books route -> show the full list of books */
+/* GET /books route -> shows the full list of books */
 router.get(
     "/books",
     asyncHandler(async (req, res) => {
+        // Retreive data for all books
         const books = await Book.findAll();
-        res.render("index", { books, title: "Books" });
+        // render table list of all books
+        res.render("index", { books, title: "Book Overview" });
     })
 );
 
-/* GET /books/new route -> show the create new book form */
+/* GET /books/new route -> shows the "create new book" form */
 router.get(
     "/books/new",
     asyncHandler(async (req, res) => {
-        res.render("new-book", { title: "Shows the create new book form" });
+        // render the new book form - add an empty book object because no data exists yet
+        res.render("new-book", { book: {}, title: "Create New Book" });
     })
 );
 
-/* POST /books/new route -> post a new book to the database */
+/* POST /books/new route -> posts a new book to the database */
 router.post(
     "/books/new",
     asyncHandler(async (req, res) => {
+        console.log("req.body:", req.body);
+
+        let book;
+        console.log("book:", book);
+
+        try {
+            // create new book with data from form (= req.body)
+            book = await Book.create(req.body);
+            console.log("book:", book);
+
+            // redirect to start book overview
+            res.redirect("/books");
+        } catch (err) {
+            // if it is a validation error -> sho error message
+            if (err.name === "SequelizeValidationError") {
+                console.log("err.message:", err.message);
+
+                console.log("book:", book);
+                // res.render("index", { book: book, title: "New Book" });
+                res.render("new-book", { book: req.body, errors: err.errors, title: "Create New Book" });
+                // res.redirect("/books/new");
+            } else {
+                console.log(err);
+            }
+        }
         // create a new book:
         // -> ......
-        res.render("new-book", { title: "Posts a new book to the database" });
+        // res.render("new-book", { title: "Posts a new book to the database" });
     })
 );
 
-/* GET /books/:id route -> show book detail form */
+/* GET /books/:id route -> shows "book detail" form (update-book page) */
 router.get(
     "/books/:id",
     asyncHandler(async (req, res) => {
+        // use the id in the params to retreive the data for the book
         const book = await Book.findByPk(req.params.id);
-        res.render("update-book", { book, title: "Shows book detail form" });
+        // render the book details in the update-book page
+        res.render("update-book", { book, title: "Update Book" });
     })
 );
 
@@ -64,10 +92,10 @@ router.get(
 router.post(
     "/books/:id",
     asyncHandler(async (req, res) => {
-        const books = await Book.findAll();
-        // console.log(res.json(books));
-        // res.send("Welcome");
-        res.render("update-book", { title: "Updates book info in the database" });
+        console.log("req.body:", req.body);
+        // update a book:
+        // -> ......
+        res.redirect("/books");
     })
 );
 
