@@ -77,6 +77,39 @@ router.post(
     })
 );
 
+/* POST /books/search route -> searches for books */
+router.post(
+    "/books/search",
+    asyncHandler(async (req, res) => {
+        // store query from search form
+        const query = req.body.query.toLowerCase();
+        // Retreive data for all books
+        const books = await Book.findAll();
+        // create variable to store search filtered books
+        const filteredBooks = [];
+
+        // loop through array of books
+        for (let i = 0; i < books.length; i++) {
+            // check if title, author, genre or year of book includes query
+            if (
+                books[i].title.toLowerCase().includes(query) ||
+                books[i].author.toLowerCase().includes(query) ||
+                books[i].genre.toLowerCase().includes(query) ||
+                books[i].year.toString().includes(query)
+            ) {
+                console.log(books[i].title);
+                // add book to filtered books array
+                filteredBooks.push(books[i]);
+            }
+        }
+
+        const searchPageTitle = `Results for: ${query}`;
+
+        // res.json(filteredBooks);
+        res.render("index", { books: filteredBooks, title: searchPageTitle });
+    })
+);
+
 /* GET /books/:id route -> shows "book detail" form (update-book page) */
 router.get(
     "/books/:id",
