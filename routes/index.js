@@ -59,7 +59,7 @@ router.post(
             // redirect to start book overview
             res.redirect("/books");
         } catch (err) {
-            // if it is a validation error -> sho error message
+            // if it is a validation error -> show error message
             if (err.name === "SequelizeValidationError") {
                 console.log("err.message:", err.message);
 
@@ -88,18 +88,31 @@ router.get(
     })
 );
 
-/* POST /books/:id route -> update book info in database */
+/* POST /books/:id route -> updates book info in database */
 router.post(
     "/books/:id",
     asyncHandler(async (req, res) => {
         console.log("req.body:", req.body);
-        // update a book:
-        // -> ......
-        res.redirect("/books");
+        let book;
+        try {
+            // use id in params to find book
+            book = await Book.findByPk(req.params.id);
+            // update book with data from form (= req.body)
+            await book.update(req.body);
+            // redirect to main book page
+            res.redirect("/books");
+        } catch (err) {
+            // if it is a validation error -> show error message
+            if (err.name === "SequelizeValidationError") {
+                book = req.body; // book data from the form
+                book.id = req.params.id; // book id from the url params
+                res.render("update-book", { book, errors: err.errors, title: "Update Book" });
+            }
+        }
     })
 );
 
-/* POST /books/:id route -> delete a book */
+/* POST /books/:id route -> deletes a book */
 router.post(
     "/books/:id/delete",
     asyncHandler(async (req, res) => {
