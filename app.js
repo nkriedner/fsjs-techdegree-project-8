@@ -55,7 +55,8 @@ app.use(function (err, req, res, next) {
         console.log(err.status, err.message);
     } else {
         err.message = "Sorry, but something went wrong...";
-        res.status(err.status || 500).send(err.message);
+        res.status(err.status || 500).render("error", { err });
+        // res.status(err.status || 500).send(err.message);
         // res.render("error");
         console.log(err.status, err.message);
     }
