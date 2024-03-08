@@ -24,7 +24,7 @@ block content
       input(type="submit", value="Update Book")
   form(action=`/books/${book.id}/delete`, method="POST")
     p 
-      a.button(href="/") Cancel
+      a#cancel-btn.button(href="/") Cancel
     p 
-      input(type="submit", value="Delete Book")
+      input#delete-btn(type="submit", value="Delete Book")
 

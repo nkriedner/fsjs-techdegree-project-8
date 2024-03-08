@@ -100,7 +100,32 @@ input[type="text"] {
 }
 
 /* My styles -> */
+#cancel-btn {
+    background-color: #ff5722;
+}
+#delete-btn {
+    background-color: #800000;
+}
 #search-submit {
     margin-left: 10px;
+}
+.pagination {
+    margin-top: 40px;
+}
+.page-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+.page-item a {
+    padding: 5px 10px;
+    border: 1px solid #9b8f8f;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #333;
+}
+.page-item.disabled a {
+    pointer-events: none; /* disable pointer events */
+    background-color: #ddd; /* change background color for disabled buttons */
+    color: #888; /* change text color for disabled buttons */
 }
 /* <- My styles */

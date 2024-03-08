@@ -24,12 +24,37 @@ router.get(
 
 /* GET /books route -> shows the full list of books */
 router.get(
-    "/books",
+    "/books/",
     asyncHandler(async (req, res) => {
+        // console.log("test");
+        // console.log("req.query.page:", req.query.page);
         // Retreive data for all books
         const books = await Book.findAll();
         // render table list of all books
-        res.render("index", { books, title: "Book Overview" });
+
+        // ****************
+        // PAGINATION ->
+        // ****************
+        // retrieve the current page number from the query parameter (or else set it to 1)
+        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+        // define the number of books per page
+        const booksPerPage = 8;
+        // calculate the start and end index of books for the current page
+        const startIndex = (currentPage - 1) * booksPerPage;
+        const endIndex = Math.min(startIndex + booksPerPage, books.length);
+        // calculate the total number of pages
+        const totalPages = Math.ceil(books.length / booksPerPage);
+        // extract books for the current page
+        const currentBooks = books.slice(startIndex, endIndex);
+
+        // render books page with the necessary data
+        res.render("index", {
+            books: currentBooks,
+            currentPage: currentPage,
+            totalPages: totalPages,
+            title: "Book Overview",
+            urlVariable: "/books/",
+        });
     })
 );
 
@@ -71,9 +96,6 @@ router.post(
                 console.log(err);
             }
         }
-        // create a new book:
-        // -> ......
-        // res.render("new-book", { title: "Posts a new book to the database" });
     })
 );
 
@@ -83,6 +105,7 @@ router.post(
     asyncHandler(async (req, res) => {
         // store query from search form
         const query = req.body.query.toLowerCase();
+        console.log("query:", query);
         // if query is empty -> redirect back to main page
         if (query === "") {
             return res.redirect("/books");
@@ -101,7 +124,7 @@ router.post(
                 books[i].genre.toLowerCase().includes(query) ||
                 books[i].year.toString().includes(query)
             ) {
-                console.log(books[i].title);
+                // console.log(books[i].title);
                 // add book to filtered books array
                 filteredBooks.push(books[i]);
             }
@@ -109,8 +132,27 @@ router.post(
 
         const searchPageTitle = `Results for: ${query}`;
 
-        // res.json(filteredBooks);
-        res.render("index", { books: filteredBooks, title: searchPageTitle });
+        // retrieve the current page number from the query parameter (or else set it to 1)
+        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
+        // define the number of books per page
+        const booksPerPage = 8;
+        // calculate the start and end index of books for the current page
+        const startIndex = (currentPage - 1) * booksPerPage;
+        const endIndex = Math.min(startIndex + booksPerPage, filteredBooks.length);
+        // calculate the total number of pages
+        const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+        // extract books for the current page
+        const currentBooks = filteredBooks.slice(startIndex, endIndex);
+        // console.log("currentBooks:", currentBooks);
+
+        // render books page with the necessary data
+        res.render("index", {
+            books: currentBooks,
+            currentPage: currentPage,
+            totalPages: totalPages,
+            title: searchPageTitle,
+            urlVariable: "search/",
+        });
     })
 );
 
