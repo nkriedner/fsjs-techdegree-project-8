@@ -83,6 +83,10 @@ router.post(
     asyncHandler(async (req, res) => {
         // store query from search form
         const query = req.body.query.toLowerCase();
+        // if query is empty -> redirect back to main page
+        if (query === "") {
+            return res.redirect("/books");
+        }
         // Retreive data for all books
         const books = await Book.findAll();
         // create variable to store search filtered books

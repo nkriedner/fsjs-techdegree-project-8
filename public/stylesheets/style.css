@@ -98,3 +98,9 @@ input[type="text"] {
 .error {
     color: rgb(236, 15, 15);
 }
+
+/* My styles -> */
+#search-submit {
+    margin-left: 10px;
+}
+/* <- My styles */
