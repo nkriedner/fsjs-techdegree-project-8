@@ -53,7 +53,6 @@ router.get(
             currentPage: currentPage,
             totalPages: totalPages,
             title: "Book Overview",
-            urlVariable: "/books/",
         });
     })
 );
@@ -151,7 +150,6 @@ router.post(
             currentPage: currentPage,
             totalPages: totalPages,
             title: searchPageTitle,
-            urlVariable: "search/",
         });
     })
 );

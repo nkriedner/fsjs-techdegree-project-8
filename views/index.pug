@@ -34,13 +34,14 @@ block content
             td= book.genre
             td= book.year
 
-    //- Pagination buttons
-    if totalPages > 1
-      ul.pagination
-        li.page-item(class=(currentPage === 1) ? 'disabled' : '')
-          a(href=`${urlVariable}?page=${currentPage - 1}`) Previous
-        - for (var i = 1; i <= totalPages; i++)
-          li.page-item(class=(i === currentPage) ? 'active' : '')
-            a(href=`${urlVariable}?page=${i}`) #{i}
-        li.page-item(class=(currentPage === totalPages) ? 'disabled' : '')
-          a(href=`${urlVariable}?page=${currentPage + 1}`) Next
+    //- Pagination buttons (for main "Book Overview" page)
+    if title === "Book Overview"
+      if totalPages > 1
+        ul.pagination
+          li.page-item(class=(currentPage === 1) ? 'disabled' : '')
+            a(href=`/books/?page=${currentPage - 1}`) Previous
+          - for (var i = 1; i <= totalPages; i++)
+            li.page-item(class=(i === currentPage) ? 'active' : '')
+              a(href=`/books/?page=${i}`) #{i}
+          li.page-item(class=(currentPage === totalPages) ? 'disabled' : '')
+            a(href=`/books/?page=${currentPage + 1}`) Next
