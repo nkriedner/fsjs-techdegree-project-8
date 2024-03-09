@@ -26,15 +26,11 @@ router.get(
 router.get(
     "/books/",
     asyncHandler(async (req, res) => {
-        // console.log("test");
-        // console.log("req.query.page:", req.query.page);
         // Retreive data for all books
         const books = await Book.findAll();
         // render table list of all books
 
-        // ****************
-        // PAGINATION ->
-        // ****************
+        // PAGINATION
         // retrieve the current page number from the query parameter (or else set it to 1)
         const currentPage = req.query.page ? parseInt(req.query.page) : 1;
         // define the number of books per page
@@ -86,11 +82,7 @@ router.post(
             // if it is a validation error -> show error message
             if (err.name === "SequelizeValidationError") {
                 console.log("err.message:", err.message);
-
-                console.log("book:", book);
-                // res.render("index", { book: book, title: "New Book" });
                 res.render("new-book", { book: req.body, errors: err.errors, title: "Create New Book" });
-                // res.redirect("/books/new");
             } else {
                 console.log(err);
             }
@@ -123,7 +115,6 @@ router.post(
                 books[i].genre.toLowerCase().includes(query) ||
                 books[i].year.toString().includes(query)
             ) {
-                // console.log(books[i].title);
                 // add book to filtered books array
                 filteredBooks.push(books[i]);
             }

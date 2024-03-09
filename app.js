@@ -50,14 +50,11 @@ app.use(function (err, req, res, next) {
     // render the error page
     if (err.status === 404) {
         err.message = "Sorry, but we could not find a page for this url.";
-        // res.status(404).send(err.message);
         res.status(404).render("page-not-found", { err });
         console.log(err.status, err.message);
     } else {
         err.message = `Sorry, but some server error occured. Use the "Home" button to get back to the starting page!`;
         res.status(err.status || 500).render("error", { err });
-        // res.status(err.status || 500).send(err.message);
-        // res.render("error");
         console.log(err.status, err.message);
     }
 });
