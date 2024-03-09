@@ -122,24 +122,9 @@ router.post(
 
         const searchPageTitle = `Results for: ${query}`;
 
-        // retrieve the current page number from the query parameter (or else set it to 1)
-        const currentPage = req.query.page ? parseInt(req.query.page) : 1;
-        // define the number of books per page
-        const booksPerPage = 8;
-        // calculate the start and end index of books for the current page
-        const startIndex = (currentPage - 1) * booksPerPage;
-        const endIndex = Math.min(startIndex + booksPerPage, filteredBooks.length);
-        // calculate the total number of pages
-        const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
-        // extract books for the current page
-        const currentBooks = filteredBooks.slice(startIndex, endIndex);
-        // console.log("currentBooks:", currentBooks);
-
         // render books page with the necessary data
         res.render("index", {
-            books: currentBooks,
-            currentPage: currentPage,
-            totalPages: totalPages,
+            books: filteredBooks,
             title: searchPageTitle,
         });
     })
